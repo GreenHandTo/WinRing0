@@ -20,15 +20,21 @@ jobs:
       - name: Build x64 Release
         run: msbuild WinRing0Dll/WinRing0Dll2017.vcxproj /p:Configuration=Release /p:Platform=x64 /m
 
+      - name: Build WinRing0.sys x64 Release
+        run: msbuild WinRing0Sys/WinRing0Sys.vcxproj /p:Configuration=Release /p:Platform=x64 /m
+
       - name: List output files
         run: dir WinRing0Dll\x64\Release
+
+      - name: List sys files
+        run: dir WinRing0Sys\x64\Release
 
       - name: Compress DLL, LIB, and header
         run: |
           powershell Compress-Archive -Path `
             WinRing0Dll\x64\Release\WinRing0x64.dll,`
             WinRing0Dll\x64\Release\WinRing0x64.lib,`
-            WinRing0Dll\x64\Release\WinRing0.sys,`
+            WinRing0Sys\x64\Release\WinRing0.sys,`
             WinRing0Dll\OlsApi.h `
             -DestinationPath WinRing0-Build.zip
 
