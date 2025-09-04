@@ -1,29 +1,46 @@
-name: Build WinRing0 DLL
+name: Build WinRing0 (x86 + x64)
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-  build-winring0:
-    runs-on: windows-2022  # 固定版本避免 windows-latest 迁移问题
+  build:
+    runs-on: windows-2022
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup MSBuild
+      - name: Setup MSBuild environment
         uses: microsoft/setup-msbuild@v1
 
-      - name: Build WinRing0 DLL (x64 Release)
-        run: msbuild WinRing0Dll\WinRing0Dll2017.vcxproj /p:Configuration=Release /p:Platform=x64
+      - name: Restore NuGet packages
+        run: nuget restore WinRing0Dll/WinRing0Dll2017.sln
 
-      - name: Upload DLL and headers
+      - name: Build x64 Release
+        run: msbuild WinRing0Dll/WinRing0Dll2017.vcxproj /p:Configuration=Release /p:Platform=x64 /m
+
+      - name: Build x86 Release
+        run: msbuild WinRing0Dll/WinRing0Dll2017.vcxproj /p:Configuration=Release /p:Platform=Win32 /m
+
+      - name: List output files
+        run: dir WinRing0Dll\x64\Release & dir WinRing0Dll\x86\Release
+
+      - name: Compress DLL, LIB, and header
+        run: |
+          powershell Compress-Archive -Path `
+            WinRing0Dll\x64\Release\WinRing0x64.dll,`
+            WinRing0Dll\x64\Release\WinRing0x64.lib,`
+            WinRing0Dll\x86\Release\WinRing0x86.dll,`
+            WinRing0Dll\x86\Release\WinRing0x86.lib,`
+            WinRing0Dll\OlsApi.h `
+            -DestinationPath WinRing0-Build.zip
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: winring0-dll
-          path: |
-            WinRing0Dll\OlsApi.h
-            WinRing0Dll\x64\Release\WinRing0x64.dll
+          name: WinRing0-Build
+          path: WinRing0-Build.zip
