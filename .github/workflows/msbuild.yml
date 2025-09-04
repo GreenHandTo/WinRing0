@@ -21,15 +21,13 @@ jobs:
         run: msbuild WinRing0Dll/WinRing0Dll2017.vcxproj /p:Configuration=Release /p:Platform=x64 /m
 
       - name: List output files
-        run: dir WinRing0Dll\x64\Release & dir WinRing0Dll\x86\Release
+        run: dir WinRing0Dll\x64\Release
 
       - name: Compress DLL, LIB, and header
         run: |
           powershell Compress-Archive -Path `
             WinRing0Dll\x64\Release\WinRing0x64.dll,`
             WinRing0Dll\x64\Release\WinRing0x64.lib,`
-            WinRing0Dll\x86\Release\WinRing0x86.dll,`
-            WinRing0Dll\x86\Release\WinRing0x86.lib,`
             WinRing0Dll\OlsApi.h `
             -DestinationPath WinRing0-Build.zip
 
