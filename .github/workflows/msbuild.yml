@@ -20,9 +20,6 @@ jobs:
       - name: Build x64 Release
         run: msbuild WinRing0Dll/WinRing0Dll2017.vcxproj /p:Configuration=Release /p:Platform=x64 /m
 
-      - name: Build x86 Release
-        run: msbuild WinRing0Dll/WinRing0Dll2017.vcxproj /p:Configuration=Release /p:Platform=Win32 /m
-
       - name: List output files
         run: dir WinRing0Dll\x64\Release & dir WinRing0Dll\x86\Release
 
