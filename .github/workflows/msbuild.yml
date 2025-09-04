@@ -28,6 +28,7 @@ jobs:
           powershell Compress-Archive -Path `
             WinRing0Dll\x64\Release\WinRing0x64.dll,`
             WinRing0Dll\x64\Release\WinRing0x64.lib,`
+            WinRing0Dll\x64\Release\WinRing0.sys,`
             WinRing0Dll\OlsApi.h `
             -DestinationPath WinRing0-Build.zip
 
