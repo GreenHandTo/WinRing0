@@ -17,9 +17,6 @@ jobs:
       - name: Setup MSBuild environment
         uses: microsoft/setup-msbuild@v1
 
-      - name: Restore NuGet packages
-        run: nuget restore WinRing0Dll/WinRing0Dll2017.sln
-
       - name: Build x64 Release
         run: msbuild WinRing0Dll/WinRing0Dll2017.vcxproj /p:Configuration=Release /p:Platform=x64 /m
 
