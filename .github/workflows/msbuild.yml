@@ -3,7 +3,7 @@ name: Build WinRing0 (x86 + x64)
 on:
   push:
     branches:
-      - main
+      - master
   workflow_dispatch:
 
 jobs:
