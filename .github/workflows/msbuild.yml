@@ -1,37 +1,29 @@
-name: Build WinRing0
+name: Build WinRing0 DLL
 
 on:
-  workflow_dispatch:   # 手动触发
-  push:                # 或者每次 push 时触发
-    branches:
-      - master
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  build:
-    runs-on: windows-2022
+  build-winring0:
+    runs-on: windows-2022  # 固定版本避免 windows-latest 迁移问题
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1.1
+        uses: microsoft/setup-msbuild@v1
 
-      - name: Setup Visual Studio Developer Command Prompt
-        uses: egor-tensin/vs-shell@v2
+      - name: Build WinRing0 DLL (x64 Release)
+        run: msbuild WinRing0Dll\WinRing0Dll2017.vcxproj /p:Configuration=Release /p:Platform=x64
 
-      - name: Build WinRing0 (x64 Release)
-        run: msbuild WinRing0.sln /p:Configuration=Release /p:Platform=x64
-
-      - name: Build WinRing0 (x86 Release)
-        run: msbuild WinRing0.sln /p:Configuration=Release /p:Platform=Win32
-
-      - name: Upload artifacts
+      - name: Upload DLL and headers
         uses: actions/upload-artifact@v4
         with:
-          name: winring0-build
+          name: winring0-dll
           path: |
-            **/Release/*.dll
-            **/Release/*.lib
-            **/Release/*.sys
-            **/OlsApi.h
+            WinRing0Dll\OlsApi.h
+            WinRing0Dll\WinRing0x64.dll
