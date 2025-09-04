@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2022
 
     steps:
       - name: Checkout repo
@@ -27,7 +27,7 @@ jobs:
         run: msbuild WinRing0.sln /p:Configuration=Release /p:Platform=Win32
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: winring0-build
           path: |
