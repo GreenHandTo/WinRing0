@@ -2,9 +2,9 @@ name: Build WinRing0 DLL
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   build-winring0:
