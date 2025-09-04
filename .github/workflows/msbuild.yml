@@ -26,4 +26,4 @@ jobs:
           name: winring0-dll
           path: |
             WinRing0Dll\OlsApi.h
-            WinRing0Dll\WinRing0x64.dll
+            WinRing0Dll\x64\Release\WinRing0x64.dll
